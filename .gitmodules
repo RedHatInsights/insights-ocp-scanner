@@ -1,3 +1,0 @@
-[submodule "vendor/github.com/RedHatInsights/insights-goapi"]
-	path = vendor/github.com/RedHatInsights/insights-goapi
-	url = https://github.com/RedHatInsights/insights-goapi
