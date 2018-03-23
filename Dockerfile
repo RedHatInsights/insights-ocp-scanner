@@ -18,6 +18,11 @@ COPY ./vendor ./vendor
 
 RUN go build -o insights-scanner
 
+RUN rm /etc/insights-client/.fallback.json
+RUN rm /etc/insights-client/insights-client.conf
+COPY ./.fallback.json /etc/insights-client/.fallback.json
+COPY ./insights-client.conf /etc/insights-client/insights-client.conf
+
 ENV EGG=/etc/insights-client/rpm.egg
 
 ENTRYPOINT ["./insights-scanner"]
