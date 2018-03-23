@@ -2,11 +2,11 @@ package main
 
 import (
 	"os"
-	"net/http"
-	"bytes"
 	"flag"
-
+	"path"
+	"io/ioutil"
 	"log"
+	"fmt"
 
 	iclient "github.com/RedHatInsights/insights-goapi/client"
 	"github.com/RedHatInsights/insights-goapi/container"
@@ -22,25 +22,20 @@ func main() {
 
 	log.Printf(scanOptions.DstPath)
 
+    rhaiDir := path.Join(scanOptions.DstPath, "etc", "redhat-access-insights")
+    machineidPath := path.Join(rhaiDir, "machine-id")
+    os.MkdirAll(rhaiDir, os.ModePerm)
+    err := ioutil.WriteFile(machineidPath, []byte("deeznuts"), 0644)
+    if err != nil {
+        panic(err)
+    }
+
 	scanner := iclient.NewDefaultScanner()
 
 	_, out, err := scanner.ScanImage(scanOptions.DstPath, image.ID)
 
 	if err != nil {
-		log.Fatalf("Scan failed %s", err)
+		fmt.Print("ERROR: Scan failed %s", err)
 	}
-	log.Printf(string(*out))
-	api := "http://" + os.Getenv("SCAN_API") + "/reports"
-	jsonStr := []byte(*out)
-	req, err := http.NewRequest("POST", api + "/" + image.ID, bytes.NewBuffer(jsonStr))
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	log.Printf("Status: %s", resp.Status)
+	fmt.Print(string(*out))
 }
