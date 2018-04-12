@@ -1,28 +1,22 @@
-FROM centos:centos7
+FROM rhel7:7.5-ondeck
 
-MAINTAINER Lindani Phiri <lphiri@redhat.com>
+MAINTAINER Jeremy Crafts <jcrafts@redhat.com>
 
-COPY ./insights-client-3.0.2-2.fc25.noarch.rpm  /insights-client-3.0.2-2.fc25.noarch.rpm
+LABEL com.redhat.component="insights-ocp-scanner-container"
+LABEL name="containers/insights-ocp-scanner"
+LABEL version="0.1"
+LABEL summary="Scanner container for Red Hat Insights on Openshift"
+
+COPY . /
+ENV GOPATH=/go
+ENV EGG=/etc/insights-client/rpm.egg
+
+WORKDIR /go/src/github.com/RedHatInsights/insights-ocp-scanner
 
 RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
     yum install -y golang git && \
-    yum install -y /insights-client-3.0.2-2.fc25.noarch.rpm && \
-    yum clean all
-
-ENV GOPATH=/go
-RUN mkdir -p /go/src/github.com/RedHatInsights/insights-ocp/scanner
-WORKDIR /go/src/github.com/RedHatInsights/insights-ocp/scanner
-
-COPY ./insights-scanner.go ./insights-scanner.go
-COPY ./vendor ./vendor
-
-RUN go build -o insights-scanner
-
-RUN rm /etc/insights-client/.fallback.json
-RUN rm /etc/insights-client/insights-client.conf
-COPY ./.fallback.json /etc/insights-client/.fallback.json
-COPY ./insights-client.conf /etc/insights-client/insights-client.conf
-
-ENV EGG=/etc/insights-client/rpm.egg
+    yum install -y ../../../../../insights-client-3.0.2-2.fc25.noarch.rpm && \
+    yum clean all && \
+    go build -o insights-scanner
 
 ENTRYPOINT ["./insights-scanner"]
