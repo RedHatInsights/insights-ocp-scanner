@@ -5,7 +5,6 @@ import (
 	"os/exec"
 	"fmt"
 
-
 	"github.com/RedHatInsights/insights-goapi/common"
 )
 
