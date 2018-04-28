@@ -1,0 +1,21 @@
+FROM rhel7:7.5
+
+LABEL \
+      com.redhat.component="insights-ocp-scanner-container" \
+      name="containers/insights-ocp-scanner" \
+      version="0.0.1" 
+
+RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
+    yum install -y golang git && \
+    yum install -y insights-client && \ 
+    yum install -y insights-ocp-scanner && \
+    yum clean all && \
+    rm /etc/insights-client/.fallback.json && \
+    rm /etc/insights-client/insights-client.conf
+COPY ./.fallback.json /etc/insights-client/.fallback.json
+COPY ./insights-client.conf /etc/insights-client/insights-client.conf
+
+
+
+ENTRYPOINT ["/usr/bin/insights-ocp-scanner"]
+
