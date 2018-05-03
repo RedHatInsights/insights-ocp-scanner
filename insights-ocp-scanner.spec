@@ -29,11 +29,16 @@ go build -o insights-ocp-scanner -ldflags "-B 0x$(head -c20 /dev/urandom|od -An 
 
 %install
 install -d %{buildroot}%{_bindir}
+mkdir -p %{buildroot}/etc/insights-ocp-scanner
 install -p -m 0755 ./insights-ocp-scanner %{buildroot}%{_bindir}/insights-ocp-scanner
+install -m644 ./client-egg/rpm.egg  %{buildroot}/etc/insights-ocp-scanner
+install -m644 ./client-egg/rpm.egg.asc  %{buildroot}/etc/insights-ocp-scanner
 
 %files
 #%doc LICENSE README.md
 %{_bindir}/insights-ocp-scanner
+/etc/insights-ocp-scanner/rpm.egg
+/etc/insights-ocp-scanner/rpm.egg.asc
 
 %changelog
 * Wed May 02 2018 Lindani Phiri <lphiri@redhat.com> - 0.0.1-1
