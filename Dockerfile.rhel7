@@ -7,19 +7,10 @@ LABEL \
 
 RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
     yum install -y golang && \
-    yum install -y insights-client && \ 
+    yum install -y insights-client && \
     yum install -y insights-ocp-scanner && \
-    yum clean all && \
-    rm /etc/insights-client/.fallback.json && \
-    rm /etc/insights-client/insights-client.conf && \
-    mv /etc/insights-ocp-scanner/rpm.egg /etc/insights-client/ && \
-    mv /etc/insights-ocp-scanner/rpm.egg.asc /etc/insights-client/
-
-COPY ./.fallback.json /etc/insights-client/.fallback.json
-COPY ./insights-client.conf /etc/insights-client/insights-client.conf
-
+    yum clean all
 
 ENV EGG=/etc/insights-client/rpm.egg
 
 ENTRYPOINT ["/usr/bin/insights-ocp-scanner"]
-
