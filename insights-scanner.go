@@ -35,7 +35,8 @@ func main() {
 	_, out, err := scanner.ScanImage(scanOptions.DstPath, image.ID)
 
 	if err != nil {
-		fmt.Print("ERROR: Scan failed %s", err)
+		fmt.Printf("ERROR: Scan failed %s", err)
+		return
 	}
 	fmt.Print(string(*out))
 }
