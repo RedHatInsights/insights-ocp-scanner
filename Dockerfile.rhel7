@@ -9,7 +9,11 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
     yum install -y golang && \
     yum install -y insights-client && \
     yum install -y insights-ocp-scanner && \
-    yum clean all
+    yum clean all &&\ 
+    rm  /etc/insights-client/rpm.egg && \
+    rm  /etc/insights-client/rpm.egg.asc && \ 
+    mv /etc/insights-ocp-scanner/rpm.egg /etc/insights-client/ && \
+    mv /etc/insights-ocp-scanner/rpm.egg.asc /etc/insights-client/
 
 ENV EGG=/etc/insights-client/rpm.egg
 

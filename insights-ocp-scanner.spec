@@ -42,7 +42,7 @@ install -m644 ./client-egg/rpm.egg.asc  %{buildroot}/etc/insights-ocp-scanner
 
 %changelog
 
-* Tue May 07 2018 Lindani Phiri <lphiri@redhat.com> - 0.0.1-2
+* Tue May 08 2018 Lindani Phiri <lphiri@redhat.com> - 0.0.1-2
 - Update insights client dependency
 
 * Wed May 02 2018 Lindani Phiri <lphiri@redhat.com> - 0.0.1-1

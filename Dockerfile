@@ -16,8 +16,8 @@ WORKDIR /go/src/github.com/RedHatInsights/insights-ocp/scanner
 COPY ./insights-scanner.go ./insights-scanner.go
 COPY ./vendor ./vendor
 
-RUN go build -o insights-scanner
+RUN go build -o /usr/bin/insights-scanner
 
 ENV EGG=/etc/insights-client/rpm.egg
 
-ENTRYPOINT ["./insights-scanner"]
+ENTRYPOINT ["/usr/bin/insights-scanner"]
