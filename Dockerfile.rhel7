@@ -1,12 +1,6 @@
 FROM rhel7:7.5
 
-LABEL \
-      com.redhat.component="insights-ocp-scanner-container" \
-      name="containers/insights-ocp-scanner" \
-      version="0.0.1" 
-
 RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
-    yum install -y golang && \
     yum install -y insights-client && \
     yum install -y insights-ocp-scanner && \
     yum clean all &&\ 
@@ -18,3 +12,15 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
 ENV EGG=/etc/insights-client/rpm.egg
 
 ENTRYPOINT ["/usr/bin/insights-ocp-scanner"]
+
+LABEL \
+     com.redhat.component="insights-ocp-scanner-container" \
+     version="0.0.1" \
+     summary="Image scanner for Red Hat Image Insights on Openshift" \
+     io.k8s.description="The scanner analyzes container image content." \
+     description="The scanner analyzes container image content." \
+     vendor="Red Hat" \
+     name="insights-tech-preview/insights-ocp-scanner" \
+     io.k8s.display-name="Red Hat Insights Openshift Scanner" \
+     io.openshift.tags="openshift,redhatinsights" \
+     usage="This container can be used standalone to scan images"
